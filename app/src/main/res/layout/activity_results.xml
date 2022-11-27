@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".ResultsActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@null"
+            app:popupTheme="@style/AppTheme.PopupOverlay">
+
+            <ImageButton
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="start"
+                android:background="@color/transparent"
+                android:src="@drawable/ic_back"
+                android:textColor="@color/white"
+                android:onClick="goBack"/>
+
+            <TextView
+                android:visibility="visible"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="4dp"
+                android:fontFamily="@font/bold"
+                android:text="Emotion Based Music Player"
+                android:textColor="@color/black"
+                android:textSize="17dp" />
+
+
+        </androidx.appcompat.widget.Toolbar>
+
+        <LinearLayout
+            android:layout_below="@id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:weightSum="5"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0sp"
+                android:orientation="vertical"
+                android:weightSum="5"
+                android:layout_weight="4">
+
+                <TextView
+                    android:id="@+id/heading"
+                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="We got Results"
+                    android:textColor="@color/red"
+                    android:gravity="center"
+                    android:fontFamily="@font/bold"
+                    android:layout_marginTop="15sp"
+                    android:textSize="25sp"/>
+
+                <ImageView
+                    android:id="@+id/emotionPic"
+                    android:layout_weight="3"
+                    android:layout_below="@id/heading"
+                    android:layout_gravity="center"
+                    android:layout_width="200sp"
+                    android:layout_height="200sp"
+                    android:src="@drawable/happy"/>
+
+                <TextView
+                    android:id="@+id/emotion"
+                    android:layout_weight="1"
+                    android:layout_below="@id/emotionPic"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Happy Mood"
+                    android:fontFamily="@font/bold"
+                    android:textColor="@color/green"
+                    android:gravity="center"
+                    android:layout_marginTop="15sp"
+                    android:textSize="30sp"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0sp"
+                android:layout_weight="1"
+                android:weightSum="2">
+
+                <Button
+                    android:id="@+id/btnRetake"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="View Playlist"
+                    android:fontFamily="@font/bold"
+                    android:textSize="20sp"
+                    android:background="@color/colorAccent"
+                    android:textColor="@color/white"
+                    android:gravity="center"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
