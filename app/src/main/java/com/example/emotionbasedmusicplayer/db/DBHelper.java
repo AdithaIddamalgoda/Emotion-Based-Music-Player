@@ -4,13 +4,12 @@ import static com.example.emotionbasedmusicplayer.db.DBHelper.ColumnNames.*;
 
 import android.content.ContentValues;
 import android.content.Context;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import androidx.annotation.Nullable;
 
-import com.example.emotionbasedmusicplayer.AudioModel;
+import com.example.emotionbasedmusicplayer.Model.AudioModel;
 
 import java.util.List;
 
