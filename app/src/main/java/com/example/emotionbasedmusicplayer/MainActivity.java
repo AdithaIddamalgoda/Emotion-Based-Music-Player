@@ -15,6 +15,8 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.emotionbasedmusicplayer.Model.AudioModel;
+
 import java.io.File;
 import java.util.ArrayList;
 
@@ -22,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
 
     RecyclerView recyclerView;
     TextView noMusicTextView;
-    ArrayList<com.example.emotionbasedmusicplayer.AudioModel> songsList = new ArrayList<>();
+    ArrayList<AudioModel> songsList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -46,7 +46,7 @@
                 android:background="@color/white">
 
                 <TextView
-                    android:id="@+id/txtTitle"
+                    android:id="@+id/txtSongTitle"
                     android:layout_below="@id/toolbar"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -79,7 +79,7 @@
                         android:textSize="13dp" />
 
                     <TextView
-                        android:id="@+id/txtDate"
+                        android:id="@+id/txtSongType"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/medium"

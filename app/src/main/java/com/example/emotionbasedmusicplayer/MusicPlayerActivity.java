@@ -9,6 +9,8 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.emotionbasedmusicplayer.Model.AudioModel;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
@@ -18,8 +20,8 @@ public class MusicPlayerActivity extends AppCompatActivity {
     TextView titleTv,currentTimeTv,totalTimeTv;
     SeekBar seekBar;
     ImageView pausePlay,nextBtn,previousBtn,musicIcon;
-    ArrayList<com.example.emotionbasedmusicplayer.AudioModel> songsList;
-    com.example.emotionbasedmusicplayer.AudioModel currentSong;
+    ArrayList<AudioModel> songsList;
+    AudioModel currentSong;
     MediaPlayer mediaPlayer = MyMediaPlayer.getInstance();
     int x=0;
 
@@ -39,7 +41,7 @@ public class MusicPlayerActivity extends AppCompatActivity {
 
         titleTv.setSelected(true);
 
-        songsList = (ArrayList<com.example.emotionbasedmusicplayer.AudioModel>) getIntent().getSerializableExtra("LIST");
+        songsList = (ArrayList<AudioModel>) getIntent().getSerializableExtra("LIST");
 
         setResourcesWithMusic();
 
