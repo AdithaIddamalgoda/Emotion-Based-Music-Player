@@ -3,9 +3,9 @@ package com.example.emotionbasedmusicplayer;
 import java.io.Serializable;
 
 public class AudioModel implements Serializable {
-    String path;
-    String title;
-    String duration;
+    private String path;
+    private String title;
+    private String duration;
 
     public AudioModel(String path, String title, String duration) {
         this.path = path;
