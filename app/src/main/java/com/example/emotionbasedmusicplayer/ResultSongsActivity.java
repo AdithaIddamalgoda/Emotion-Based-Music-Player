@@ -2,16 +2,17 @@ package com.example.emotionbasedmusicplayer;
 
 import static com.example.emotionbasedmusicplayer.AllSongs.EM_HAPPY;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.RecyclerView;
-
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.emotionbasedmusicplayer.Model.AudioModel;
 import com.example.emotionbasedmusicplayer.db.DBHelper;
 import com.example.emotionbasedmusicplayer.recycleviews.RecycleViewConfig;
-import com.example.emotionbasedmusicplayer.recycleviews.songs.SongRecycleItem;
 import com.example.emotionbasedmusicplayer.recycleviews.songs.SongsAdapter;
 
 import java.util.ArrayList;
@@ -53,7 +54,9 @@ public class ResultSongsActivity extends AppCompatActivity {
     }
 
     private void songSelectedFromRecView(AudioModel audioModel) {
-        //TODO open musicPlayer
-        Toast.makeText(this, audioModel.getSongName(), Toast.LENGTH_LONG).show();
+        Intent intent = new Intent();
+        intent.setAction(android.content.Intent.ACTION_VIEW);
+        intent.setDataAndType(Uri.parse(audioModel.getPath()), "audio/*");
+        startActivity(intent);
     }
 }
