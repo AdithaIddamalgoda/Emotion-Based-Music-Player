@@ -9,7 +9,6 @@ import androidx.appcompat.widget.AppCompatSpinner;
 import androidx.documentfile.provider.DocumentFile;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
@@ -21,7 +20,6 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,8 +31,6 @@ import com.example.emotionbasedmusicplayer.recycleviews.songs.SongsAdapter;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
-import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -56,7 +52,13 @@ public class AllSongs extends AppCompatActivity {
     private List<AudioModel> songsList;
     private List<String> songsIdList;
     private Dialog myDialog;
-    private String[] emotionList = {"Happy","Sad","Angry","Neutral","Surprised"};
+    public static final String EM_HAPPY = "Happy";
+    public static final String EM_SAD = "Sad";
+    public static final String EM_ANGRY = "Angry";
+    public static final String EM_NEUTRAL = "Neutral";
+    public static final String EM_SURPRISED = "Surprised";
+
+    private final String[] emotionList = {EM_HAPPY, EM_SAD, EM_ANGRY, EM_NEUTRAL, EM_SURPRISED};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,9 +72,9 @@ public class AllSongs extends AppCompatActivity {
             browseDirResultLauncher.launch(browseDirIntent);
         });
 
-        songsList = new ArrayList<AudioModel>();
-        songsIdList = new ArrayList<String>();
-        recyclerView = (RecyclerView) findViewById(R.id.rec_view_all_songs);
+        songsList = new ArrayList<>();
+        songsIdList = new ArrayList<>();
+        recyclerView = findViewById(R.id.rec_view_all_songs);
         myDialog = new Dialog(this);
 
         loadAllSongs();
@@ -87,9 +89,13 @@ public class AllSongs extends AppCompatActivity {
         }
         List<AudioModel> audioModelList = new ArrayList<>();
         DocumentFile[] documentFiles = directory.listFiles();
-        List<DocumentFile> audioFiles = Arrays.asList(documentFiles)
-                .stream()
-                .filter(documentFile -> documentFile.getType().contains("audio/"))
+        List<DocumentFile> audioFiles = Arrays.stream(documentFiles)
+                .filter(documentFile -> {
+                    if (documentFile.getType() == null) {
+                        return false;
+                    }
+                    return documentFile.getType().contains("audio/");
+                })
                 .collect(Collectors.toList());
 
         audioFiles.forEach(audioFIle -> {
@@ -108,39 +114,40 @@ public class AllSongs extends AppCompatActivity {
             AudioModel audioModel = new AudioModel(audioFIle.getUri().toString(), audioFIle.getName(), duration);
             audioModelList.add(audioModel);
         });
-        if (!audioModelList.isEmpty()){
+        if (!audioModelList.isEmpty()) {
             dbHelper.replaceSongsList(audioModelList);
         }
     }
-    
-    private void loadAllSongs(){
 
-        //TODO get song records from DB and updated songList
+    private void loadAllSongs() {
 
-        AudioModel audioModel = new AudioModel();
-        audioModel.setTitle("TestSong");
-        audioModel.setDefaultMood("TestMood");
-        songsList.add(audioModel);
-        songsIdList.add("1");
+        songsList = dbHelper.getAllSongs();
+        songsList.forEach(audioModel -> songsIdList.add(String.valueOf(audioModel.getId())));
 
-        if (songsList.isEmpty()){
+        if (songsList.isEmpty()) {
             Toast.makeText(this, "No Records found", Toast.LENGTH_SHORT).show();
-        }else {
+        } else {
             SongsAdapter songsAdapter = new SongsAdapter(songsList, songsIdList, this);
             new RecycleViewConfig().setConfig(recyclerView, this, songsAdapter);
         }
     }
 
-    private void saveSongsToDB(List<AudioModel> audioModelList){
+    private void saveSongsToDB(List<AudioModel> audioModelList) {
 
     }
 
-    public void viewSongDetails(AudioModel audioModel){
+    public void viewSongDetails(AudioModel audioModel) {
 
         myDialog.setContentView(R.layout.custom_popup_view_song);
         Button btnPopupBtn = (Button) myDialog.findViewById(R.id.btnSubmit);
         TextView txtSongTitle = (TextView) myDialog.findViewById(R.id.txtSongTitle);
-        EditText txtHappy = (EditText) myDialog.findViewById(R.id.txtHappy);
+        EditText etAngry = myDialog.findViewById(R.id.et_angry);
+        EditText etDisgust = myDialog.findViewById(R.id.et_disgust);
+        EditText etFear = myDialog.findViewById(R.id.et_fear);
+        EditText etHappy = myDialog.findViewById(R.id.et_happy);
+        EditText etNeutral = myDialog.findViewById(R.id.et_neutral);
+        EditText etSad = myDialog.findViewById(R.id.et_sad);
+        EditText etSurprise = myDialog.findViewById(R.id.et_surprise);
         emotionSpinner = myDialog.findViewById(R.id.dropEmotions);
 
         txtSongTitle.setText(audioModel.getTitle());
@@ -148,25 +155,53 @@ public class AllSongs extends AppCompatActivity {
         btnPopupBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                audioModel.setHappy(Integer.parseInt(txtHappy.getText().toString()));
-
-                //TODO update to the DB
-
-                myDialog.dismiss();
+                if (!TextUtils.isEmpty(etAngry.getText().toString()) &&
+                        !TextUtils.isEmpty(etDisgust.getText().toString()) &&
+                        !TextUtils.isEmpty(etFear.getText().toString()) &&
+                        !TextUtils.isEmpty(etHappy.getText().toString()) &&
+                        !TextUtils.isEmpty(etNeutral.getText().toString()) &&
+                        !TextUtils.isEmpty(etSad.getText().toString()) &&
+                        !TextUtils.isEmpty(etSurprise.getText().toString())) {
+                    int angry = Integer.parseInt(etAngry.getText().toString());
+                    int disgust = Integer.parseInt(etDisgust.getText().toString());
+                    int fear = Integer.parseInt(etFear.getText().toString());
+                    int happy = Integer.parseInt(etHappy.getText().toString());
+                    int neutral = Integer.parseInt(etNeutral.getText().toString());
+                    int sad = Integer.parseInt(etSad.getText().toString());
+                    int surprise = Integer.parseInt(etSurprise.getText().toString());
+                    if (angry <= 100 && disgust <= 100 && fear <= 100 && happy <= 100 &&
+                            neutral <= 100 && sad <= 100 && surprise <= 100) {
+                        String defaultMood = emotionSpinner.getSelectedItem().toString();
+                        audioModel.setAngry(angry);
+                        audioModel.setDisgust(disgust);
+                        audioModel.setFear(fear);
+                        audioModel.setHappy(happy);
+                        audioModel.setNeutral(neutral);
+                        audioModel.setSad(sad);
+                        audioModel.setSurprise(surprise);
+                        audioModel.setDefaultMood(defaultMood);
+                        //TODO update to the DB
+                        dbHelper.updateSongDetails(audioModel);
+                        loadAllSongs();
+                        myDialog.dismiss();
+                    } else {
+                        Toast.makeText(AllSongs.this, "Values must in between 0 and 100", Toast.LENGTH_LONG).show();
+                    }
+                } else {
+                    Toast.makeText(AllSongs.this, "Please fill All fields", Toast.LENGTH_LONG).show();
+                }
             }
         });
-
         myDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         myDialog.show();
     }
 
     private void updateSpinnerData() {
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this,
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_item, emotionList);
 
         // Drop down layout style - list view with radio button
-        dataAdapter
-                .setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         // attaching data adapter to spinner
         emotionSpinner.setAdapter(dataAdapter);

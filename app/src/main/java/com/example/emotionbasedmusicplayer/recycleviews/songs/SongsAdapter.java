@@ -15,6 +15,7 @@ public class SongsAdapter extends RecyclerView.Adapter<SongRecycleItem> {
     private List<AudioModel> mPer;
     private List<String> mKey;
     private AppCompatActivity mContext;
+    private SongRecycleItem.OnSongSelected onSongSelected;
 
     public SongsAdapter(List<AudioModel> mPer, List<String> mKey, AppCompatActivity mContext) {
         this.mPer = mPer;
@@ -22,10 +23,19 @@ public class SongsAdapter extends RecyclerView.Adapter<SongRecycleItem> {
         this.mContext = mContext;
     }
 
+    public SongsAdapter(List<AudioModel> mPer, List<String> mKey, SongRecycleItem.OnSongSelected onSongSelected) {
+        this.mPer = mPer;
+        this.mKey = mKey;
+        this.onSongSelected = onSongSelected;
+    }
+
     @NonNull
     @Override
     public SongRecycleItem onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new SongRecycleItem(parent, mContext);
+        if (mContext != null) {
+            return new SongRecycleItem(parent, mContext);
+        }
+        return new SongRecycleItem(parent, onSongSelected);
     }
 
     @Override

@@ -4,6 +4,7 @@ import static com.example.emotionbasedmusicplayer.db.DBHelper.ColumnNames.*;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
@@ -11,6 +12,7 @@ import androidx.annotation.Nullable;
 
 import com.example.emotionbasedmusicplayer.Model.AudioModel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class DBHelper extends SQLiteOpenHelper {
@@ -71,5 +73,100 @@ public class DBHelper extends SQLiteOpenHelper {
             contentValues.put(DURATION, audioModel.getDuration());
             sqLiteDatabase.insert(SONGS_TABLE, null, contentValues);
         });
+    }
+
+    public List<AudioModel> getAllSongs() {
+        SQLiteDatabase database = this.getReadableDatabase();
+        Cursor cursor = database.query(SONGS_TABLE, null, null, null, null, null, "id ASC");
+        List<AudioModel> audioModelList = new ArrayList<>();
+        if (cursor.moveToFirst()) {
+            int idIndex = cursor.getColumnIndex("id");
+            int nameIndex = cursor.getColumnIndex(SONG_NAME);
+            int durationIndex = cursor.getColumnIndex(DURATION);
+            int pathIndex = cursor.getColumnIndex(PATH);
+            int angryIndex = cursor.getColumnIndex(ANGRY);
+            int disgustIndex = cursor.getColumnIndex(DISGUST);
+            int fearIndex = cursor.getColumnIndex(FEAR);
+            int happyIndex = cursor.getColumnIndex(HAPPY);
+            int neutralIndex = cursor.getColumnIndex(NEUTRAL);
+            int sadIndex = cursor.getColumnIndex(SAD);
+            int supIndex = cursor.getColumnIndex(SURPRISE);
+            int enabledIndex = cursor.getColumnIndex(ENABLED);
+            int defMoodIndex = cursor.getColumnIndex(DEFAULT_MOOD);
+            do {
+                AudioModel audioModel = new AudioModel();
+                audioModel.setId(cursor.getInt(idIndex));
+                audioModel.setSongName(cursor.getString(nameIndex));
+                audioModel.setDuration(cursor.getString(durationIndex));
+                audioModel.setPath(cursor.getString(pathIndex));
+                audioModel.setAngry(cursor.getInt(angryIndex));
+                audioModel.setDisgust(cursor.getInt(disgustIndex));
+                audioModel.setFear(cursor.getInt(fearIndex));
+                audioModel.setHappy(cursor.getInt(happyIndex));
+                audioModel.setNeutral(cursor.getInt(neutralIndex));
+                audioModel.setSad(cursor.getInt(sadIndex));
+                audioModel.setSurprise(cursor.getInt(supIndex));
+                audioModel.setEnabled(cursor.getInt(enabledIndex));
+                audioModel.setDefaultMood(cursor.getString(defMoodIndex));
+                audioModelList.add(audioModel);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        return audioModelList;
+    }
+
+    public void updateSongDetails(AudioModel audioModel) {
+        SQLiteDatabase database = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(ANGRY, audioModel.getAngry());
+        contentValues.put(DISGUST, audioModel.getDisgust());
+        contentValues.put(FEAR, audioModel.getFear());
+        contentValues.put(HAPPY, audioModel.getHappy());
+        contentValues.put(NEUTRAL, audioModel.getNeutral());
+        contentValues.put(SAD, audioModel.getSad());
+        contentValues.put(SURPRISE, audioModel.getSurprise());
+        contentValues.put(DEFAULT_MOOD, audioModel.getDefaultMood());
+        String[] st = new String[]{String.valueOf(audioModel.getId())};
+        database.update(SONGS_TABLE, contentValues, "id=" + audioModel.getId(), null);
+    }
+
+    public List<AudioModel> getSongsByDefaultMood(String defaultMood) {
+        SQLiteDatabase database = this.getReadableDatabase();
+        Cursor cursor = database.query(SONGS_TABLE, null, DEFAULT_MOOD + "='" + defaultMood+ "'", null, null, null, "id ASC");
+        List<AudioModel> audioModelList = new ArrayList<>();
+        if (cursor.moveToFirst()) {
+            int idIndex = cursor.getColumnIndex("id");
+            int nameIndex = cursor.getColumnIndex(SONG_NAME);
+            int durationIndex = cursor.getColumnIndex(DURATION);
+            int pathIndex = cursor.getColumnIndex(PATH);
+            int angryIndex = cursor.getColumnIndex(ANGRY);
+            int disgustIndex = cursor.getColumnIndex(DISGUST);
+            int fearIndex = cursor.getColumnIndex(FEAR);
+            int happyIndex = cursor.getColumnIndex(HAPPY);
+            int neutralIndex = cursor.getColumnIndex(NEUTRAL);
+            int sadIndex = cursor.getColumnIndex(SAD);
+            int supIndex = cursor.getColumnIndex(SURPRISE);
+            int enabledIndex = cursor.getColumnIndex(ENABLED);
+            int defMoodIndex = cursor.getColumnIndex(DEFAULT_MOOD);
+            do {
+                AudioModel audioModel = new AudioModel();
+                audioModel.setId(cursor.getInt(idIndex));
+                audioModel.setSongName(cursor.getString(nameIndex));
+                audioModel.setDuration(cursor.getString(durationIndex));
+                audioModel.setPath(cursor.getString(pathIndex));
+                audioModel.setAngry(cursor.getInt(angryIndex));
+                audioModel.setDisgust(cursor.getInt(disgustIndex));
+                audioModel.setFear(cursor.getInt(fearIndex));
+                audioModel.setHappy(cursor.getInt(happyIndex));
+                audioModel.setNeutral(cursor.getInt(neutralIndex));
+                audioModel.setSad(cursor.getInt(sadIndex));
+                audioModel.setSurprise(cursor.getInt(supIndex));
+                audioModel.setEnabled(cursor.getInt(enabledIndex));
+                audioModel.setDefaultMood(cursor.getString(defMoodIndex));
+                audioModelList.add(audioModel);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        return audioModelList;
     }
 }

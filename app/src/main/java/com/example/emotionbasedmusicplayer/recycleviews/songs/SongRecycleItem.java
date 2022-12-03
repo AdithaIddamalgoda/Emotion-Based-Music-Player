@@ -23,6 +23,10 @@ public class SongRecycleItem extends RecyclerView.ViewHolder {
     private final TextView txtSongType;
     private String key;
     private AudioModel audioModel;
+    private OnSongSelected onSongSelected;
+    public interface OnSongSelected{
+        void songSelected(AudioModel audioModel);
+    }
 
     public SongRecycleItem(ViewGroup parent, AppCompatActivity mContext) {
         super(LayoutInflater.from(mContext).inflate(R.layout.item_song, parent, false));
@@ -30,13 +34,19 @@ public class SongRecycleItem extends RecyclerView.ViewHolder {
         txtSongTitle = itemView.findViewById(R.id.txtSongTitle);
         txtSongType = itemView.findViewById(R.id.txtSongType);
 
-        itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AllSongs allSongs = (AllSongs)mContext;
-                allSongs.viewSongDetails(audioModel);
-            }
+        itemView.setOnClickListener(v -> {
+            AllSongs allSongs = (AllSongs)mContext;
+            allSongs.viewSongDetails(audioModel);
         });
+    }
+
+    public SongRecycleItem(ViewGroup parent, OnSongSelected onSongSelected) {
+        super(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_song, parent, false));
+
+        txtSongTitle = itemView.findViewById(R.id.txtSongTitle);
+        txtSongType = itemView.findViewById(R.id.txtSongType);
+
+        itemView.setOnClickListener(v -> onSongSelected.songSelected(audioModel));
     }
 
     public void bind(AudioModel audioModel, String key) {

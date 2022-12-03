@@ -3,6 +3,7 @@ package com.example.emotionbasedmusicplayer.Model;
 import java.io.Serializable;
 
 public class AudioModel implements Serializable {
+    private int id;
     private String path;
     private String songName;
     private String duration;
@@ -25,7 +26,8 @@ public class AudioModel implements Serializable {
         this.duration = duration;
     }
 
-    public AudioModel(String path, String songName, String duration, int angry, int disgust, int fear, int happy, int neutral, int sad, int surprise, int enabled, String defaultMood) {
+    public AudioModel(int id, String path, String songName, String duration, int angry, int disgust, int fear, int happy, int neutral, int sad, int surprise, int enabled, String defaultMood) {
+        this.id = id;
         this.path = path;
         this.songName = songName;
         this.duration = duration;
@@ -38,6 +40,14 @@ public class AudioModel implements Serializable {
         this.surprise = surprise;
         this.enabled = enabled;
         this.defaultMood = defaultMood;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getPath() {
