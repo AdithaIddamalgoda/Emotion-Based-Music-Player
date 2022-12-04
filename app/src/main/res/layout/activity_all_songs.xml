@@ -22,8 +22,7 @@
             android:clickable="true"
             android:fontFamily="@font/regular"
             android:src="@drawable/ic_back"
-            android:textColor="@color/white"
-            android:onClick="goBack"/>
+            android:textColor="@color/white"/>
 
         <TextView
             android:visibility="invisible"
@@ -92,7 +91,9 @@
             android:layout_below="@id/heading"
             android:layout_marginTop="10dp"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_below="@id/heading"
+            android:layout_marginTop="10dp">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerView"
